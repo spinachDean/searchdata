@@ -1,0 +1,476 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <title>新建新闻爬虫</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/reset.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/common.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/thems.css}"/>
+    <script type="text/javascript" th:src="@{/static/js/jquery-1.8.3.min.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+        $(function () {
+            //自适应屏幕宽度
+            window.onresize = function () {
+                location = location
+            };
+            var checkurl=[[@{/check/news}]];
+            var name=[[${info.name}]];
+            $.get(checkurl+"/"+name,function (d) {
+                if(d.running)
+                {
+                    $("#running").text("正在运行");
+                    $("#count").text("当前已爬取"+d.news+"条新闻");
+                }else
+                {
+                    $("#running").text("已停止");
+                    $("#count").text("上次运行爬取了"+d.news+"条新闻");
+                }
+            });
+            var main_h = $(window).height();
+            $('.hy_list').css('height', main_h - 45 + 'px');
+
+            var main_w = $(window).width();
+            $('.xjhy').css('width', main_w - 40 + 'px');
+
+
+            $(".tabBox .tabCont:first").css("display", "block");
+            $(".tabBox .tabNav li").click(function () {
+                $(this).siblings("li").removeClass("now");
+                $(this).addClass("now");
+                $(this).parents(".tabBox").find(".tabCont").css("display", "none");
+                var i = $(this).index();
+                $(this).parents(".tabBox").find(".tabCont:eq(" + i + ")").css("display", "block");
+            });
+
+            $('.xial_m span').click(function () {
+                $(this).parent('.xial_m').siblings('.xl_ctn').toggle();
+            });
+
+
+        });
+        function test () {
+            var url=[[@{/test/news}]];
+            var data=$("#addform").serialize();
+            $("#test").text("waiting...");
+            $.get(url,data ,function(data,status,xhr){
+                alert(xhr.responseText);
+                $("#test").text("测试");
+            });
+        }
+        function submit () {
+            var url=[[@{/target/news}]];
+            var data=$("#addform").serialize();
+            $.post(url,data ,function(data){
+                alert(data);
+            });
+        }
+        function run() {
+            var url=[[@{/run/news}]];
+            var name=[[${info.name}]];
+            $.get(url+"/"+name,function (t) {
+                alert(t);
+            });
+        }
+        function  stop() {
+            var url=[[@{/stop/news}]];
+            var name=[[${info.name}]];
+            $.post(url+"/"+name,function (t) {
+                alert(t);
+            });
+        }
+    </script>
+</head>
+
+<body onLoad="Resize();">
+<div id="right_ctn">
+    <div class="right_m">
+        <!--会议列表-->
+        <div class="hy_list">
+            <div class="box_t">
+                <span class="name">新建爬虫</span>
+                <!--当前位置-->
+                <div class="position">
+                    <a href=""><img th:src="@{/static/images/icon5.png}" alt=""/></a>
+                    <a href="">首页</a>
+                    <span><img th:src="@{/static/images/icon3.png}" alt=""/></span>
+                    <a href="">会议管理</a>
+                    <span><img th:src="@{/static/images/icon3.png}" alt=""/></span>
+                    <a href="">会议列表</a>
+                </div>
+                <!--当前位置-->
+            </div>
+            <div class="space_hx">&nbsp;</div>
+            <!--新建会议-->
+            <form action="" method="post" id="addform">
+                <div class="xjhy" style="padding:0px;" th:object="${info}">
+                    <div class="tabBox_t">
+                        <div class="tabBox">
+                            <ul class="tabNav">
+                                <li class="now"><span>基本配置</span></li>
+                                <li><span>高级配置</span></li>
+                            </ul>
+                            <div class="tabCont" style="display:block;margin-left: 50px;">
+                                <!--基本配置-->
+                                <ul class="hypz">
+                                    <li class="clearfix">
+                                        <span class="title">爬虫名称：</span>
+                                        <div class="li_r">
+                                            <input class="chang" name="name" type="text" th:value="*{name}" />
+                                            <i>*</i>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <span class="title">列表页：</span>
+                                        <div class="li_r">
+                                            <input class="chang" name="pageListURL" type="text" th:value="*{pageListURL}"/>
+                                            <i>*</i>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <span class="title">新闻页目标：</span>
+                                            <div class="li_r">
+                                                <input class="chang" name="pageListTarget" type="text" th:value="*{pageListTarget}">
+                                                <i>*</i>
+                                            </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <span class="title">新闻ID（id）：</span>
+                                        <div class="li_r">
+                                            <input class="chang" name="idTarget" type="text" th:value="*{idTarget}">
+                                            <i>*</i>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <span class="title">新闻标题（title）：</span>
+                                        <div class="li_r">
+                                            <input class="chang" name="titleTarget" type="text" th:value="*{titleTarget}">
+                                            <i>*</i>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <span class="title">新闻内容（content）：</span>
+                                        <div class="li_r">
+                                            <input class="chang" name="contentTarget" type="text" th:value="*{contentTarget}">
+                                            <i>*</i>
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <span class="title">新闻类型（type）：</span>
+                                        <div class="li_r">
+                                            <input class="chang" name="typeTarget" type="text" th:value="*{typeTarget}">
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <span class="title">新闻日期（date）：</span>
+                                        <div class="li_r">
+                                            <input class="chang" name="timeTarget" type="text" th:value="*{timeTarget}">
+                                        </div>
+                                    </li>
+
+                                    <li class="clearfix">
+                                        <span class="title">评论页：</span>
+                                        <div class="li_r">
+                                            <input class="chang" name="commentURL" type="text" th:value="*{commentURL}">
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <span class="title">评论内容：</span>
+                                        <div class="li_r">
+                                            <input class="chang" name="commentTarget" type="text" th:value="*{commentTarget}">
+                                        </div>
+                                    </li>
+                                    <li class="clearfix">
+                                        <span class="title">当前状态：</span>
+                                        <div class="li_r">
+                                            运行状态：<span id="running"></span>
+                                            (<span id="count"></span>)
+                                        </div>
+                                    </li>
+                                    <li class="tj_btn" th:if="*{not #strings.contains(pageListURL,'{keyword}')}">
+                                        <a onclick="run()" id="run">运行</a>
+                                        <a onclick="stop()" id="stop">停止</a>
+                                    </li>
+                                    <li class="tj_btn">
+                                        <a onclick="test()" id="test">测试</a><a onclick="submit()" id="submit">保存</a>
+                                    </li>
+
+                                </ul>
+                                <!--基本配置-->
+                            </div>
+                            <div class="tabCont">
+                                <!--&lt;!&ndash;高级配置&ndash;&gt;-->
+                                <!--<ul class="hypz gjpz clearfix">-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">多画面数：</span>-->
+                                        <!--<div class="li_r">-->
+                                            <!--<input class="chang" name="" type="text">-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">主动呼叫终端：</span>-->
+                                        <!--<div class="li_r">-->
+                                        <!--<span class="radio">-->
+                                        	<!--<input checked="checked" name="hjzd" type="radio" value="">-->
+                                            <!--<em>否</em>-->
+                                        <!--</span>-->
+                                            <!--<span class="radio">-->
+                                        	<!--<input name="hjzd" type="radio" value="">-->
+                                            <!--<em>是</em>-->
+                                        <!--</span>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">WEB 监控画面数：</span>-->
+                                        <!--<div class="li_r xial">-->
+                                            <!--<div class="xial_w">-->
+                                                <!--<div class="xial_m">-->
+                                                    <!--<input class="duan" name="" type="text">-->
+                                                    <!--<span>&nbsp;</span>-->
+                                                <!--</div>-->
+                                                <!--<ul class="xl_ctn">-->
+                                                    <!--<li>不支持</li>-->
+                                                    <!--<li>支持</li>-->
+                                                <!--</ul>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">终端上端参加混音：</span>-->
+                                        <!--<div class="li_r">-->
+                                        <!--<span class="radio">-->
+                                        	<!--<input checked="checked" name="radio2" type="radio" value="">-->
+                                            <!--<em>否</em>-->
+                                        <!--</span>-->
+                                            <!--<span class="radio">-->
+                                        	<!--<input name="radio2" type="radio" value="">-->
+                                            <!--<em>是</em>-->
+                                        <!--</span>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">多画面显示模式：</span>-->
+                                        <!--<div class="li_r">-->
+                                        <!--<span class="radio">-->
+                                        	<!--<input checked="checked" name="radio3" type="radio" value="">-->
+                                            <!--<em>指定</em>-->
+                                        <!--</span>-->
+                                            <!--<span class="radio">-->
+                                        	<!--<input name="radio3" type="radio" value="">-->
+                                            <!--<em>自动</em>-->
+                                        <!--</span>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">辅视频码率：</span>-->
+                                        <!--<div class="li_r xial">-->
+                                            <!--<div class="xial_w">-->
+                                                <!--<div class="xial_m">-->
+                                                    <!--<input class="duan" name="" type="text">-->
+                                                    <!--<span>&nbsp;</span>-->
+                                                <!--</div>-->
+                                                <!--<ul class="xl_ctn">-->
+                                                    <!--<li>无</li>-->
+                                                    <!--<li>支持</li>-->
+                                                <!--</ul>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">组播方式：</span>-->
+                                        <!--<div class="li_r xial">-->
+                                            <!--<div class="xial_w">-->
+                                                <!--<div class="xial_m">-->
+                                                    <!--<input class="duan" name="" type="text">-->
+                                                    <!--<span>&nbsp;</span>-->
+                                                <!--</div>-->
+                                                <!--<ul class="xl_ctn">-->
+                                                    <!--<li>不支持</li>-->
+                                                    <!--<li>支持</li>-->
+                                                <!--</ul>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">辅视频类型：</span>-->
+                                        <!--<div class="li_r xial">-->
+                                            <!--<div class="xial_w">-->
+                                                <!--<div class="xial_m">-->
+                                                    <!--<input class="duan" name="" type="text">-->
+                                                    <!--<span>&nbsp;</span>-->
+                                                <!--</div>-->
+                                                <!--<ul class="xl_ctn">-->
+                                                    <!--<li>私有协议</li>-->
+                                                    <!--<li>支持</li>-->
+                                                <!--</ul>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">组播IP地址：</span>-->
+                                        <!--<div class="li_r">-->
+                                            <!--<input name="" type="text">-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">辅视频能力：</span>-->
+                                        <!--<div class="li_r xial">-->
+                                            <!--<div class="xial_w">-->
+                                                <!--<div class="xial_m">-->
+                                                    <!--<input class="duan" name="" type="text">-->
+                                                    <!--<span>&nbsp;</span>-->
+                                                <!--</div>-->
+                                                <!--<ul class="xl_ctn">-->
+                                                    <!--<li>H.263_CIF</li>-->
+                                                    <!--<li>H.263_CIF</li>-->
+                                                <!--</ul>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix zbdk">-->
+                                        <!--<span class="title">组播端口：</span>-->
+                                        <!--<div class="li_r">-->
+                                            <!--<div class="zbdk_ma">-->
+                                                <!--<span>音频：</span>-->
+                                                <!--<input name="" type="text">-->
+                                            <!--</div>-->
+                                            <!--<div class="zbdk_mb">-->
+                                                <!--<span>主视频：</span>-->
+                                                <!--<input name="" type="text">-->
+                                                <!--<span>辅视频：</span>-->
+                                                <!--<input name="" type="text">-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">广播源自看：</span>-->
+                                        <!--<div class="li_r">-->
+                                        <!--<span class="radio">-->
+                                        	<!--<input checked="checked" name="radio4" type="radio" value="">-->
+                                            <!--<em>否</em>-->
+                                        <!--</span>-->
+                                            <!--<span class="radio">-->
+                                        	<!--<input name="radio4" type="radio" value="">-->
+                                            <!--<em>是</em>-->
+                                        <!--</span>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">是否启用IP自动降速：</span>-->
+                                        <!--<div class="li_r">-->
+                                        <!--<span class="radio">-->
+                                        	<!--<input checked="checked" name="radio5" type="radio" value="">-->
+                                            <!--<em>否</em>-->
+                                        <!--</span>-->
+                                            <!--<span class="radio">-->
+                                        	<!--<input name="radio5" type="radio" value="">-->
+                                            <!--<em>是</em>-->
+                                        <!--</span>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">视频能力：</span>-->
+                                        <!--<div class="li_r xial">-->
+                                            <!--<div class="xial_w">-->
+                                                <!--<div class="xial_m">-->
+                                                    <!--<input class="duan" name="" type="text">-->
+                                                    <!--<span>&nbsp;</span>-->
+                                                <!--</div>-->
+                                                <!--<ul class="xl_ctn">-->
+                                                    <!--<li>H.263_CIF</li>-->
+                                                    <!--<li>H.263_CIF</li>-->
+                                                <!--</ul>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">音频加密算法：</span>-->
+                                        <!--<div class="li_r xial">-->
+                                            <!--<div class="xial_w">-->
+                                                <!--<div class="xial_m">-->
+                                                    <!--<input class="duan" name="" type="text">-->
+                                                    <!--<span>&nbsp;</span>-->
+                                                <!--</div>-->
+                                                <!--<ul class="xl_ctn">-->
+                                                    <!--<li>不支持加密</li>-->
+                                                    <!--<li>支持加密</li>-->
+                                                <!--</ul>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">音频能力：</span>-->
+                                        <!--<div class="li_r xial">-->
+                                            <!--<div class="xial_w">-->
+                                                <!--<div class="xial_m">-->
+                                                    <!--<input class="duan" name="" type="text">-->
+                                                    <!--<span>&nbsp;</span>-->
+                                                <!--</div>-->
+                                                <!--<ul class="xl_ctn">-->
+                                                    <!--<li>G.711A</li>-->
+                                                    <!--<li>G.711A</li>-->
+                                                <!--</ul>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">主视频加密算法：</span>-->
+                                        <!--<div class="li_r xial">-->
+                                            <!--<div class="xial_w">-->
+                                                <!--<div class="xial_m">-->
+                                                    <!--<input class="duan" name="" type="text">-->
+                                                    <!--<span>&nbsp;</span>-->
+                                                <!--</div>-->
+                                                <!--<ul class="xl_ctn">-->
+                                                    <!--<li>不支持加密</li>-->
+                                                    <!--<li>支持加密</li>-->
+                                                <!--</ul>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">会议存储：</span>-->
+                                        <!--<div class="li_r xial">-->
+                                            <!--<div class="xial_w">-->
+                                                <!--<div class="xial_m">-->
+                                                    <!--<input class="duan" name="" type="text">-->
+                                                    <!--<span>&nbsp;</span>-->
+                                                <!--</div>-->
+                                                <!--<ul class="xl_ctn">-->
+                                                    <!--<li>不存储</li>-->
+                                                    <!--<li>存储</li>-->
+                                                <!--</ul>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="clearfix">-->
+                                        <!--<span class="title">辅视频加密算法：</span>-->
+                                        <!--<div class="li_r xial">-->
+                                            <!--<div class="xial_w">-->
+                                                <!--<div class="xial_m">-->
+                                                    <!--<input class="duan" name="" type="text">-->
+                                                    <!--<span>&nbsp;</span>-->
+                                                <!--</div>-->
+                                                <!--<ul class="xl_ctn">-->
+                                                    <!--<li>不支持加密</li>-->
+                                                    <!--<li>支持加密</li>-->
+                                                <!--</ul>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</li>-->
+                                    <!--<li class="tj_btn">-->
+                                        <!--<a href="">下一步</a>-->
+                                    <!--</li>-->
+                                <!--</ul>-->
+                                <!--高级配置-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!--新建会议-->
+        </div>
+        <!--会议列表-->
+    </div>
+</div>
+</body>
+</html>
