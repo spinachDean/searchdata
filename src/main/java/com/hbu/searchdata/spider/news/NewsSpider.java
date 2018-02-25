@@ -48,13 +48,26 @@ public class NewsSpider implements PageProcessor {
         map.put("type",newsModel.getType());
         map.put("title",newsModel.getTitle());
         map.put("date",newsModel.getDate());
-        String commentURL=TransformUtil.getUrl(newsTarget.getCommentURL(),map);
-        Spider.create(new CommentSpider<NewsModel>(newsModel,newsTarget.getCommentTarget())).addUrl(commentURL).run();
+        String[] commentURL=TransformUtil.getUrl(newsTarget.getCommentURL(),map);
+        CommentSpider commentSpider=new CommentSpider<NewsModel>(newsModel,newsTarget.getCommentTarget());
+
+        if(newsTarget.getCookies()!=null)
+            commentSpider.cookies=newsTarget.getCookies();
+        if(newsTarget.getUserAgent()!=null)
+            commentSpider.userAgent=newsTarget.getUserAgent();
+
+        Spider.create(commentSpider).addUrl(commentURL).run();
         NewsSpiderService.spiderPool.get(newsTarget.getName()).news.incrementAndGet();
     }
 
     @Override
     public Site getSite() {
+        if(newsTarget.getUserAgent()!=null)
+            site.setUserAgent(newsTarget.getUserAgent());
+        //bid=hKoxt1KKlro; ll="118093"; ps=y; ap=1; as="https://movie.douban.com/subject/26575103/"; dbcl2="174146922:MNelF6gKuyU"; ck=qfNe; push_noty_num=0; push_doumail_num=0; _vwo_uuid_v2=DD949B7B466B995215C09019FE3FB3848|8696276866a92b036ebaa43b3e839cea
+        if(newsTarget.getCookies()!=null)
+            site=NewsListSpider.getCookiesSite(site,newsTarget.getCookies());
         return site;
     }
+
 }

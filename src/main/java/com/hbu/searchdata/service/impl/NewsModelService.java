@@ -83,12 +83,12 @@ public class NewsModelService implements ModelService<NewsModel> {
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public Boolean addComments(NewsModel newsModel, List<String> contents) {
+    public Boolean addComments(NewsModel newsModel, List<String> contents,boolean first) {
         try {
-        if(newsModelDAO.countById(newsModel.getId())>0)//如果已经添加过
+        if(newsModelDAO.countById(newsModel.getId())>0&&first)//如果已经添加过并且本次是第一次添加
             newsModelDAO.delete(newsModel.getId());//删除
             newsCommentDAO.flush();
-            newsModel=newsModelDAO.saveAndFlush(newsModel);
+            newsModel=newsModelDAO.save(newsModel);
 
             List<NewsComment> list = new ArrayList<>(contents.size());
             for (String content : contents) {

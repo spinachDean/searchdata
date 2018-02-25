@@ -6,6 +6,7 @@ import com.hbu.searchdata.model.comment.NewsComment;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -25,6 +26,11 @@ public class NewsModel implements Serializable {
     @Column(length = 10000)
     private String content; //日期内容
     private String date;
+    private String spider;//是哪个爬虫爬取的
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
+    private Date createDate;//创建时间
+    @Transient
+    private Long counts;//评论个数
     @OneToMany(cascade= CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="news")
     private Set<NewsComment> comments;
 
@@ -76,6 +82,30 @@ public class NewsModel implements Serializable {
         this.date = date;
     }
 
+    public String getSpider() {
+        return spider;
+    }
+
+    public void setSpider(String spider) {
+        this.spider = spider;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Long getCounts() {
+        return counts;
+    }
+
+    public void setCounts(Long counts) {
+        this.counts = counts;
+    }
+
     public NewsModel(String id, String type, String title, String content, String date) {
         this.id = id;
         this.type = type;
@@ -83,14 +113,23 @@ public class NewsModel implements Serializable {
         this.content = content;
         this.date = date;
     }
+    public NewsModel(String id,String spider,Long counts){
+        this.id=id;
+        this.spider=spider;
+        this.counts=counts;
+    }
 
     @Override
     public String toString() {
         return "NewsModel{" +
                 "id='" + id + '\'' +
-                "title='" + title + '\'' +
+                ", type='" + type + '\'' +
+                ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", date='" + date + '\'' +
+                ", spider='" + spider + '\'' +
+                ", createDate=" + createDate +
+                ", counts=" + counts +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.hbu.searchdata.service;
 
+import com.hbu.searchdata.model.NewsSpiderStatus;
 import com.hbu.searchdata.model.target.NewsTarget;
 import com.hbu.searchdata.service.impl.NewsSpiderService;
 import com.hbu.searchdata.spider.news.NewsListSpider;
@@ -23,7 +24,6 @@ public class SearchService {
 
     @Autowired
     NewsSpiderService newsSpiderService;
-    private Map<String, Thread> spiderPool = new ConcurrentHashMap<>();
 
     /**
      * @param targets
@@ -37,10 +37,14 @@ public class SearchService {
             NewsTarget newsTarget = newsSpiderService.getTarget(s);
 
             if (newsTarget == null) continue;
-            Thread thread = new Thread(() -> {
-                Spider.create(new NewsListSpider(newsTarget)).
-                        addUrl(newsTarget.getPageListURL().replaceAll("\\{keyword\\}", keyword)).thread(5).run();});
-            spiderPool.put(s, thread);
+            Thread thread=new Thread(() ->
+            {Spider spider=Spider.create(new NewsListSpider(newsTarget)).
+                    addUrl(newsTarget.getPageListURL().replaceAll("\\{keyword\\}", keyword)).thread(5);
+                System.out.println("!"+newsTarget.getPageListURL().replaceAll("\\{keyword\\}", keyword));
+                NewsSpiderStatus newsSpiderStatus=new NewsSpiderStatus(spider);
+                NewsSpiderService.spiderPool.put(newsTarget.getName(),newsSpiderStatus);
+                spider.run();
+            });
             thread.start();
             result.add(s);
         }

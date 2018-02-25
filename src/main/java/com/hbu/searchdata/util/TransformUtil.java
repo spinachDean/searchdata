@@ -1,9 +1,7 @@
 package com.hbu.searchdata.util;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.List;
-import  java.util.Map;
+import java.util.*;
 
 import com.hbu.searchdata.model.NewsModel;
 import com.hbu.searchdata.model.target.NewsTarget;
@@ -36,25 +34,63 @@ public class TransformUtil {
         }
         return html;
     }
-    public static String getUrl(String target,Map<String,String> map )
+    public static String[] getUrl(String target,Map<String,String> map )
     {
-        int i,j;
-        char[] chars = target.toCharArray();
-        for(i=0;i<chars.length;i++)
+        List<String> result=new ArrayList<>();
+        int i,j,p,q;
+        char[] temp = target.toCharArray();
+        //https://movie.douban.com/subject/{id}/comments?start=[0-100,20]&limit=20&sort=new_score&status=P
+        if(!target.contains("["))
         {
-            if(chars[i]=='{')
+            char[] chars=target.toCharArray();
+            for(i=0;i<chars.length;i++)
             {
-                for(j=i;chars[j]!='}';j++);
-                String temp=target.substring(i+1,j);
-              //  System.out.println(temp);
+                if(chars[i]=='{')
+                {
+                    for(j=i+1;chars[j]!='}';j++);
+                    String s=target.substring(i+1,j);
+                    //  System.out.println(temp);
 
-                target =target.replaceAll("\\{"+temp+"\\}",map.get(temp));
-                chars=target.toCharArray();
-                System.out.println(target.replaceAll("\\{"+temp+"\\}",map.get(temp)));
-                i--;
+                    target =target.replaceAll("\\{"+s+"\\}",map.get(s));
+                    chars=target.toCharArray();
+                    // System.out.println(target.replaceAll("\\{"+s+"\\}",map.get(s)));
+                    i--;
+
+                }
+
+
+            }
+            result.add(new String(chars));
+        }
+        else {
+            //System.out.println("有下一页");
+            for (p = 0; temp[p] != '['; p++) ;
+            for (q = 0; temp[q] != ']'; q++) ;
+            String[] temps = target.substring(p + 1, q).split("-");
+            int start = new Integer(temps[0]);
+            int end = new Integer(temps[1].split(",")[0]);
+            int step = new Integer(temps[1].split(",")[1]);
+            for (int k = start; k < end; k += step) {
+                //System.out.println(k);
+                char[] chars = target.replaceAll("\\[.*\\]", k + "").toCharArray();
+                String str=new String(chars);
+                for (i = 0; i < chars.length; i++) {
+                    if (chars[i] == '{') {
+                        for (j = i + 1; chars[j] != '}'; j++) ;
+                        String s = str.substring(i + 1, j);
+                        //  System.out.println(temp);
+                        str=str.replaceAll("\\{" + s + "\\}", map.get(s));
+                        chars = str.toCharArray();
+                        // System.out.println(target.replaceAll("\\{"+s+"\\}",map.get(s)));
+                        i--;
+                    }
+                }
+                //System.out.println(new String(chars));
+                result.add(new String(chars));
             }
         }
-        return new String(chars);
+        System.out.println(result.size());
+        return result.toArray(new String[result.size()]);
     }
     private static Selectable getSelectable(Selectable html, int i, int j, String target, char chars[]) {
         switch (chars[j + 1]) {
@@ -107,7 +143,9 @@ public class TransformUtil {
         Map<String,String> map=new HashMap<>();
         map.put("id","testid");
         map.put("type","testtype");
-        System.out.println(getUrl("www.a={id}&b={type}.com",map));
+
+     Arrays.stream(getUrl("http://comment5.news.sina.com.cn/page/info?channel={type}&newsid={id}&page=[0-50,5]&page_size=100", map)).forEach(System.out::println);
+        //Arrays.stream(getUrl("![0-50,5]!", map)).forEach(System.out::println);
     }
 
 }

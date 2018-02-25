@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @program: searchdata
  * @description: 评论
@@ -19,6 +21,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NewsCommentDAO extends JpaRepository<NewsComment,Integer>
 {
+    //计算评论个数
     Integer countByNews_Id(String id);
+    //查看评论详情
     Page<NewsComment> findByNews_Id(String id, Pageable pageable);
+    @Query("from NewsComment c where c.news.id=?1")
+    List<NewsComment> test(String news_id);
 }

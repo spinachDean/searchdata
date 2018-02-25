@@ -57,8 +57,8 @@ public interface ModelService<T> {
 
     /**
      * 添加评论
-     * @param newsId,contents
+     * @param
      * @return
      */
-    Boolean addComments(T t,List<String> contents);
+    Boolean addComments(T t,List<String> contents,boolean first);
 }
