@@ -38,13 +38,15 @@ public class NewsListSpider implements PageProcessor{
             p[i]=pages.get(i).replaceAll("\\\\","");
         }
         NewsSpiderService.spiderPool.get(newsTarget.getName()).running.set(true);
-       Spider.create(new NewsSpider(newsTarget)).addUrl(p).thread(8).run();
+       Spider spider=Spider.create(new NewsSpider(newsTarget)).addUrl(p).thread(8);
+       NewsSpiderService.spiderPool.get(newsTarget.getName()).setNewsSpider(spider);
+       spider.run();
 
     }
 
     @Override
     public Site getSite() {
-        Site site= Site.me().setRetryTimes(3).setSleepTime(1 + (int) (Math.random() % 100) / 20);
+        Site site= Site.me().setTimeOut(5000).setCycleRetryTimes(5).setSleepTime(1 + (int) (Math.random() % 100) / 20);
         if(newsTarget.getUserAgent()!=null)
             site.setUserAgent(newsTarget.getUserAgent());
         //bid=hKoxt1KKlro; ll="118093"; ps=y; ap=1; as="https://movie.douban.com/subject/26575103/"; dbcl2="174146922:MNelF6gKuyU"; ck=qfNe; push_noty_num=0; push_doumail_num=0; _vwo_uuid_v2=DD949B7B466B995215C09019FE3FB3848|8696276866a92b036ebaa43b3e839cea

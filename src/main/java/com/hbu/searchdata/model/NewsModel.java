@@ -27,6 +27,7 @@ public class NewsModel implements Serializable {
     private String content; //日期内容
     private String date;
     private String spider;//是哪个爬虫爬取的
+
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date createDate;//创建时间
     @Transient
@@ -113,7 +114,9 @@ public class NewsModel implements Serializable {
         this.content = content;
         this.date = date;
     }
-    public NewsModel(String id,String spider,Long counts){
+    public NewsModel(String id,String title,String spider,Date createDate,Long counts){
+        this.createDate=createDate;
+        this.title=title;
         this.id=id;
         this.spider=spider;
         this.counts=counts;

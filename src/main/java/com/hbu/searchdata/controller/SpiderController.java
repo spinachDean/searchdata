@@ -115,7 +115,6 @@ public class SpiderController {
     public List<String> search(@PathVariable(name="keyword")String keyword,String targets[])
     {
      return  searchService.searchSpider(Arrays.asList(targets),keyword);
-
     }
     //检查爬虫
     @GetMapping("/check/{type}/{target}")

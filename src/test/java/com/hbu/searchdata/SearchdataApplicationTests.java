@@ -10,6 +10,8 @@ import com.hbu.searchdata.service.impl.NewsModelService;
 import com.hbu.searchdata.service.impl.NewsSpiderService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,6 +25,7 @@ import java.util.Set;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class SearchdataApplicationTests {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     NewsModelDAO newsModelDAO;
     @Autowired
@@ -30,8 +33,9 @@ public class SearchdataApplicationTests {
     @Test
     @Transactional
     public void contextLoads() {
-
-        System.out.println(newsModelDAO.findlist("123456"));
+        logger.info("test");
+        logger.debug("debug");
+        System.out.println("finish");
     }
 
 }

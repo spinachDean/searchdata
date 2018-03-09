@@ -30,16 +30,24 @@ public class NewsSpider implements PageProcessor {
         this.newsTarget=newsTarget;
     }
     //随机等待时间，防止被检测出来
-    private Site site =Site.me().setRetryTimes(3).setSleepTime(1 + (int) (Math.random() % 100) / 20);
+    private Site site =Site.me().setCycleRetryTimes(5).setTimeOut(5000).setSleepTime(20 + (int) (Math.random() % 100) / 20);
     @Override
     public void process(Page page) {
+        if(page.getUrl().toString().contains("www.baidu.com")||page.getUrl().toString().contains("www.sogou.com"))
+        {
+            //如果是百度则深入一层
+            String url=page.getHtml().regex("URL='(.*?)'").toString();
+            System.out.println("因为是百度，所以跳转到"+url);
+            page.addTargetRequest(url);
+            return;
+        }
+
     //如果停止则退出
         if(!NewsSpiderService.spiderPool.get(newsTarget.getName()).running.get())return;
         newsModel=TransformUtil.getPageNewsModel(newsTarget,page);
         if(newsTarget.getCommentTarget()==null) {
             //如果没有评论则直接保存到数据库，否则交给评论保存
             NewsModelService modelService = ApplicationContextProvider.getBean(NewsModelService.class);
-
             modelService.addModel(newsModel);
         }
         if(newsTarget.getCommentURL()==null)return;

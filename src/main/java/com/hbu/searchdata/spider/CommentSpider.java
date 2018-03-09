@@ -22,7 +22,7 @@ import java.util.List;
 
 public class CommentSpider<T> implements PageProcessor {
     //随机等待时间，防止被检测出来
-    private Site site =Site.me().setCharset("UTF-8").setRetryTimes(3).setSleepTime(1 + (int) (Math.random() % 100) / 20);
+    private Site site =Site.me().setTimeOut(5000).setCycleRetryTimes(5).setSleepTime(20 + (int) (Math.random() % 100) / 20);
     //目标表达式
     private String target;
     //是否第一次

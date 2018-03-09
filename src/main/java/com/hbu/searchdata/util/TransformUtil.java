@@ -110,6 +110,7 @@ public class TransformUtil {
 
     public static NewsModel getPageNewsModel(NewsTarget newsTarget,Page page)
     {
+
         String id,type,title,date,content;
         id=type=title=date=content=null;
         if(newsTarget.getIdTarget()!=null)
@@ -135,8 +136,10 @@ public class TransformUtil {
             content = sb.toString();
         }
         title=UnicodeUtil.decodeUnicode(title);
-
-        return new NewsModel(id,type,title,content,date);
+        NewsModel newsModel=new NewsModel(id,type,title,content,date);
+        newsModel.setSpider(newsTarget.getName());
+        newsModel.setCreateDate(new Date());
+        return newsModel;
     }
     public static void main(String[] args)
     {

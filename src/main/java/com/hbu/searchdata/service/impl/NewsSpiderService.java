@@ -6,10 +6,13 @@ import com.hbu.searchdata.service.SpiderService;
 import com.hbu.searchdata.spider.news.NewsListSpider;
 import com.hbu.searchdata.model.target.NewsTarget;
 import com.hbu.searchdata.spider.news.NewsTestSpider;
+import com.hbu.searchdata.util.TransformUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.codecraft.webmagic.Spider;
+
+import javax.xml.crypto.dsig.Transform;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,10 +38,9 @@ public class NewsSpiderService implements SpiderService<NewsTarget> {
         NewsTarget newsTarget=getTarget(target);
         logger.info("执行爬虫："+newsTarget.getName());
         //用一个线程运行爬虫，防止阻塞
-
+        String URLs[]= TransformUtil.getUrl(newsTarget.getPageListURL(),null);
         Thread thread=new Thread(() ->
-        {Spider spider=Spider.create(new NewsListSpider(newsTarget)).
-                addUrl(newsTarget.getPageListURL()).thread(5);
+        {Spider spider=Spider.create(new NewsListSpider(newsTarget)).addUrl(URLs).thread(5);
             NewsSpiderStatus newsSpiderStatus=new NewsSpiderStatus(spider);
             spiderPool.put(newsTarget.getName(),newsSpiderStatus);
             spider.run();
@@ -52,7 +54,7 @@ public class NewsSpiderService implements SpiderService<NewsTarget> {
         NewsSpiderStatus newsSpiderStatus=spiderPool.get(name);
         if(newsSpiderStatus==null) return false;
         try {
-            newsSpiderStatus.getSpider().stop();
+            newsSpiderStatus.stop();
             return true;
         } catch (Exception e) {
             return false;

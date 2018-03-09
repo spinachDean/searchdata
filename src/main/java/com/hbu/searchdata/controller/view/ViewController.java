@@ -33,6 +33,8 @@ public class ViewController {
     {
         return "index";
     }
+    @RequestMapping("/")
+    public String home(){return "index";}
     @GetMapping("/view/{view}")
     public String view(@PathVariable(name = "view")String view)
     {

@@ -59,9 +59,12 @@ public class DataSourceConfig {
         //使用druid连接数据库
         DruidDataSource result = new DruidDataSource();
         result.setDriverClassName("com.mysql.jdbc.Driver");
+//        result.setUrl("jdbc:mysql://10.191.5.25:3306/searchdata?characterEncoding=UTF-8");
+//        result.setUsername("csm");
+//        result.setPassword("xyglc@5079634");
         result.setUrl("jdbc:mysql://127.0.0.1:3306/searchdata?characterEncoding=UTF-8");
         result.setUsername("root");
-        result.setPassword("root");
+       result.setPassword("root");
         return result;
     }
 }

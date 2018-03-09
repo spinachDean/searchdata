@@ -106,4 +106,18 @@ public class NewsModelService implements ModelService<NewsModel> {
             }
         }
 
+        @Override
+        public Page<NewsModel> findModelsLike(String pattern,Pageable pageable)
+        {
+            if(!pattern.startsWith("%"))pattern="%"+pattern;
+            if(!pattern.endsWith("%"))pattern=pattern+"%";
+            return newsModelDAO.findlist(pattern,pageable);
+        }
+        @Transactional
+        @Override
+        public Integer deleteByTitles(String pattern){
+            if(!pattern.startsWith("%"))pattern="%"+pattern;
+            if(!pattern.endsWith("%"))pattern=pattern+"%";
+            return newsModelDAO.deleteAllByTitleLike(pattern);
+        }
     }

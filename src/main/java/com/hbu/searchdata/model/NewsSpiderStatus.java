@@ -16,13 +16,26 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class NewsSpiderStatus {
     @JSONField(serialize=false)
     private Spider spider;
+    private Spider newsSpider;
     public AtomicInteger news=new AtomicInteger(0);
     public AtomicBoolean running=new AtomicBoolean(false);
     public NewsSpiderStatus(Spider spider) {
         this.spider=spider;
     }
-    public Spider getSpider() {
+    public void setNewsSpider(Spider spider){
+        newsSpider=spider;
+    }
+    public Spider getSpider()
+    {
         return spider;
+    }
+    public void stop()
+    {
+        this.running.set(false);
+        if(spider!=null)
+        this.spider.stop();
+        if(newsSpider!=null)
+        this.newsSpider.stop();
     }
 
 }

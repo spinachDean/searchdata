@@ -29,7 +29,6 @@ public class SecurtiyConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/templates/login.html").permitAll()
                 .antMatchers("/static/**").permitAll()
-                .antMatchers("/**").permitAll()//运行的时候
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -75,6 +75,14 @@ public class NewsTestSpider implements PageProcessor{
         }
         if(!comment)
         {
+            if(page.getUrl().toString().contains("www.baidu.com")||page.getUrl().toString().contains("www.sogou.com"))
+            {
+                //如果是百度则深入一层
+                String url=page.getHtml().regex("URL='(.*?)'").toString();
+                System.out.println("因为是百度，所以跳转到"+url);
+                page.addTargetRequest(url);
+                return;
+            }
             map.put("contentURL",page.getUrl().get());
            // System.out.println(page.getHtml().regex("newsid: '(.*?)',").toString());
 

@@ -5,6 +5,7 @@ import com.hbu.searchdata.model.comment.NewsComment;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -61,4 +62,15 @@ public interface ModelService<T> {
      * @return
      */
     Boolean addComments(T t,List<String> contents,boolean first);
+
+
+    /**
+ * 根据模式查找文章
+ * @param pattern
+ * @return
+ */
+    Page<NewsModel> findModelsLike(String pattern, Pageable pageable);
+
+    @Transactional
+    Integer deleteByTitles(String pattern);
 }
