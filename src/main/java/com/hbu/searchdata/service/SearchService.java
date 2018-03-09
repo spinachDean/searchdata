@@ -1,7 +1,7 @@
 package com.hbu.searchdata.service;
 
 import com.hbu.searchdata.model.NewsSpiderStatus;
-import com.hbu.searchdata.model.target.NewsTarget;
+import com.hbu.searchdata.model.spidertarget.NewsTarget;
 import com.hbu.searchdata.service.impl.NewsSpiderService;
 import com.hbu.searchdata.spider.news.NewsListSpider;
 import com.hbu.searchdata.util.TransformUtil;
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @program: searchdata

@@ -1,10 +1,9 @@
 package com.hbu.searchdata.util;
 
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 import com.hbu.searchdata.model.NewsModel;
-import com.hbu.searchdata.model.target.NewsTarget;
+import com.hbu.searchdata.model.spidertarget.NewsTarget;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.selector.Selectable;
 
@@ -53,7 +52,7 @@ public class TransformUtil {
 
                     target =target.replaceAll("\\{"+s+"\\}",map.get(s));
                     chars=target.toCharArray();
-                    // System.out.println(target.replaceAll("\\{"+s+"\\}",map.get(s)));
+                    // System.out.println(spidertarget.replaceAll("\\{"+s+"\\}",map.get(s)));
                     i--;
 
                 }
@@ -81,7 +80,7 @@ public class TransformUtil {
                         //  System.out.println(temp);
                         str=str.replaceAll("\\{" + s + "\\}", map.get(s));
                         chars = str.toCharArray();
-                        // System.out.println(target.replaceAll("\\{"+s+"\\}",map.get(s)));
+                        // System.out.println(spidertarget.replaceAll("\\{"+s+"\\}",map.get(s)));
                         i--;
                     }
                 }
@@ -104,7 +103,7 @@ public class TransformUtil {
                 html = html.regex(target.substring(j+2, i));
                 break;
         }
-      // System.out.println(target.substring(j+2, i));
+      // System.out.println(spidertarget.substring(j+2, i));
         return html;
     }
 

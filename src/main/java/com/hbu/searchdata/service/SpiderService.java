@@ -1,7 +1,7 @@
 package com.hbu.searchdata.service;
 
 import com.hbu.searchdata.model.NewsSpiderStatus;
-import com.hbu.searchdata.model.target.NewsTarget;
+import com.hbu.searchdata.model.spidertarget.NewsTarget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

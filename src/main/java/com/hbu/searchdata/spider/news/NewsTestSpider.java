@@ -1,7 +1,7 @@
 package com.hbu.searchdata.spider.news;
 
 import com.hbu.searchdata.model.NewsModel;
-import com.hbu.searchdata.model.target.NewsTarget;
+import com.hbu.searchdata.model.spidertarget.NewsTarget;
 import com.hbu.searchdata.util.TransformUtil;
 import com.hbu.searchdata.util.UnicodeUtil;
 import us.codecraft.webmagic.Page;

@@ -1,6 +1,6 @@
 package com.hbu.searchdata.dao.news;
 
-import com.hbu.searchdata.model.target.NewsTarget;
+import com.hbu.searchdata.model.spidertarget.NewsTarget;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

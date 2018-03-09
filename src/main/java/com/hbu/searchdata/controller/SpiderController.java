@@ -1,7 +1,7 @@
 package com.hbu.searchdata.controller;
 
 import com.hbu.searchdata.model.NewsSpiderStatus;
-import com.hbu.searchdata.model.target.NewsTarget;
+import com.hbu.searchdata.model.spidertarget.NewsTarget;
 import com.hbu.searchdata.service.SearchService;
 import com.hbu.searchdata.service.SpiderService;
 import com.hbu.searchdata.service.impl.NewsSpiderService;

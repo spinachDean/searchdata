@@ -4,7 +4,7 @@ import com.hbu.searchdata.dao.news.NewsTargetDAO;
 import com.hbu.searchdata.model.NewsSpiderStatus;
 import com.hbu.searchdata.service.SpiderService;
 import com.hbu.searchdata.spider.news.NewsListSpider;
-import com.hbu.searchdata.model.target.NewsTarget;
+import com.hbu.searchdata.model.spidertarget.NewsTarget;
 import com.hbu.searchdata.spider.news.NewsTestSpider;
 import com.hbu.searchdata.util.TransformUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.codecraft.webmagic.Spider;
 
-import javax.xml.crypto.dsig.Transform;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -21,10 +21,10 @@ var version='2.3.6',//编辑器版本
 	//相关资源
 	resStrCreateLink='添加链接',
 	resStrTargetOptions='<option value="">默认</option><option value="_blank">新窗口</option><option value="_self">当前窗口</option><option value="_parent">父窗口</option><option value="_top">顶层窗口</option>',
-	resStrInsertLinkUI='网址:<input type="text" id="url" value="" size=45 /><br />标题:<input type="text" id="title" value="" size=45 /><br />打开:<select id="target">'+resStrTargetOptions+'</select>',
+	resStrInsertLinkUI='网址:<input type="text" id="url" value="" size=45 /><br />标题:<input type="text" id="title" value="" size=45 /><br />打开:<select id="spidertarget">'+resStrTargetOptions+'</select>',
 	resStrInsertImage='插入图片',
 	resStrInsertImageUI='图片网址:<input type="text" id="url" value="" size=40 /><br />替换文本:<input name="alt" type="text" id="alt" size="20" /><br />尺寸:<input name="width" type="text" id="width" size="4" /> &times; <input name="height" type="text" id="height" size="4" /> px &nbsp;<br />对齐:<select name="align" id="align"><option value="" >默认</option><option value="top">居上</option><option value="textTop">文本上方</option><option value="middle">居中</option><option value="absMiddle">绝对居中</option><option value="baseline">基线</option><option value="bottom">底部</option><option value="absBottom">绝对底部</option><option value="left">左</option><option value="right">右</option></select> &nbsp; &nbsp; 边框:<input name="border" type="text" id="border" size="5" />',
-	resStrImageContextUI='<form class="ePopForm">网址: <input type="text" id="url" size="50"><br>尺寸: <input  type="text" id="width" style="width:30px; overflow:visible;"> &times; <input  type="text" id="height" style="width:30px; overflow:visible;">px <a href="javascript:void(0)" id="resetWH" >重设大小</a><label><input name="lock" type="checkbox" id="lock" value="1" checked>锁定比例</label><br>替换文本: <input type="text" id="alt" /> 边框: <input type="text" id="border" style="width:30px; overflow:visible;" /><br>排版: <a href="javascript:void(0)" id="alignDefault">默认</a> | <a href="javascript:void(0)" id="alignLeft">左浮动</a> | <a href="javascript:void(0)" id="alignC">居中</a> | <a href="javascript:void(0)" id="alignRight">右浮动</a> | <a href="javascript:void(0)" id="alignTop">上对齐</a> | <a href="javascript:void(0)" id="alignAbsMiddle">中对齐</a> | <a href="javascript:void(0)" id="alignBottom">下对齐</a><div><hr>链接: <input type="text" id="link" size="40"><select id="target">'+resStrTargetOptions+'</select></div></form>',
+	resStrImageContextUI='<form class="ePopForm">网址: <input type="text" id="url" size="50"><br>尺寸: <input  type="text" id="width" style="width:30px; overflow:visible;"> &times; <input  type="text" id="height" style="width:30px; overflow:visible;">px <a href="javascript:void(0)" id="resetWH" >重设大小</a><label><input name="lock" type="checkbox" id="lock" value="1" checked>锁定比例</label><br>替换文本: <input type="text" id="alt" /> 边框: <input type="text" id="border" style="width:30px; overflow:visible;" /><br>排版: <a href="javascript:void(0)" id="alignDefault">默认</a> | <a href="javascript:void(0)" id="alignLeft">左浮动</a> | <a href="javascript:void(0)" id="alignC">居中</a> | <a href="javascript:void(0)" id="alignRight">右浮动</a> | <a href="javascript:void(0)" id="alignTop">上对齐</a> | <a href="javascript:void(0)" id="alignAbsMiddle">中对齐</a> | <a href="javascript:void(0)" id="alignBottom">下对齐</a><div><hr>链接: <input type="text" id="link" size="40"><select id="spidertarget">'+resStrTargetOptions+'</select></div></form>',
 	resStrInsertFlash='插入动画',
 	resStrInsertFlashUI='Flash网址:<input type="text" id="url" value="" size=40 /><br />尺寸:<input name="width" type="text" id="width" size="4" value="200" />&times;<input name="height" type="text" id="height" size="4" value="200" /> px',
 	resStrInsertMusic='插入音频',
@@ -831,7 +831,7 @@ TQE=function(objId,userConfig)
 		if(!$.config.autoPopImagePanel) return;
 		var o=TQE.find('__tqImagePanel');
 		if(null==o){
-			//var s='<form class="ePopForm">网址: <input type="text" id="url" size="50"><br>尺寸: <input  type="text" id="width" style="width:30px; overflow:visible;"> &times; <input  type="text" id="height" style="width:30px; overflow:visible;">px <a href="javascript:void(0)" id="resetWH" >重设大小</a><label><input name="lock" type="checkbox" id="lock" value="1" checked>锁定比例</label><br>替换文本: <input type="text" id="alt" /> 边框: <input type="text" id="border" style="width:30px; overflow:visible;" /><br>排版: <a href="javascript:void(0)" id="alignDefault">默认</a> | <a href="javascript:void(0)" id="alignLeft">左浮动</a> | <a href="javascript:void(0)" id="alignC">居中</a> | <a href="javascript:void(0)" id="alignRight">右浮动</a> | <a href="javascript:void(0)" id="alignTop">上对齐</a> | <a href="javascript:void(0)" id="alignAbsMiddle">中对齐</a> | <a href="javascript:void(0)" id="alignBottom">下对齐</a><div>链接: <input type="text" id="link" size="40"><select id="target"><option value="" >默认</option><option value="_blank">新窗口</option><option value="_self">当前窗口</option><option value="_parent">父窗口</option><option value="_top">顶层窗口</option></select></div></form>';
+			//var s='<form class="ePopForm">网址: <input type="text" id="url" size="50"><br>尺寸: <input  type="text" id="width" style="width:30px; overflow:visible;"> &times; <input  type="text" id="height" style="width:30px; overflow:visible;">px <a href="javascript:void(0)" id="resetWH" >重设大小</a><label><input name="lock" type="checkbox" id="lock" value="1" checked>锁定比例</label><br>替换文本: <input type="text" id="alt" /> 边框: <input type="text" id="border" style="width:30px; overflow:visible;" /><br>排版: <a href="javascript:void(0)" id="alignDefault">默认</a> | <a href="javascript:void(0)" id="alignLeft">左浮动</a> | <a href="javascript:void(0)" id="alignC">居中</a> | <a href="javascript:void(0)" id="alignRight">右浮动</a> | <a href="javascript:void(0)" id="alignTop">上对齐</a> | <a href="javascript:void(0)" id="alignAbsMiddle">中对齐</a> | <a href="javascript:void(0)" id="alignBottom">下对齐</a><div>链接: <input type="text" id="link" size="40"><select id="spidertarget"><option value="" >默认</option><option value="_blank">新窗口</option><option value="_self">当前窗口</option><option value="_parent">父窗口</option><option value="_top">顶层窗口</option></select></div></form>';
 			o= TQE.CE('DIV','__tqImagePanel', resStrImageContextUI ,true);
 			o.className='ePopPanel';
 			var f= TQE._tags(o,'FORM')[0],
@@ -2805,7 +2805,7 @@ TQE.toolbarBottons={
 		click:function($,sender){
 			var o=TQE.find($.objId+'CreateLink');
 			if(null==o){
-				//var s='网址:<input type="text" id="url" value="" size=45 /><br />打开:<select id="target"><option value="" >默认</option><option value="_blank">新窗口</option><option value="_self">当前窗口</option><option value="_parent">父窗口</option><option value="_top">顶层窗口</option></select>';
+				//var s='网址:<input type="text" id="url" value="" size=45 /><br />打开:<select id="spidertarget"><option value="" >默认</option><option value="_blank">新窗口</option><option value="_self">当前窗口</option><option value="_parent">父窗口</option><option value="_top">顶层窗口</option></select>';
 				var okClick= function(){
 					TQE.hidePop();
 					var es=this.form.elements,
@@ -2819,7 +2819,7 @@ TQE.toolbarBottons={
 					}
 					var r= $._getRange();
 					if(isWebkit && r.collapsed || !$.exeCmd('CreateLink', href)){
-						if(target!=='')  target = ' target="'+target+'" ';
+						if(target!=='')  target = ' spidertarget="'+target+'" ';
 						if(title!=='')  titleTxt = ' title="'+title+'" ';
 						$.insertHtml('<a href="'+href+'" '+titleTxt+target+'>'+(title?title:href)+'</a>');
 						return false;
@@ -3207,7 +3207,7 @@ TQE.toolbarBottons={
 		click:function($,sender){
 			var o=TQE.find($.objId+'TQHelpPanel');
 			if(null==o){
-				o = TQE.CE('DIV',$.objId+'TQHelpPanel', '<form class="ePopForm" style="line-height:20px;">TQEditor<br/>'+resStrVersion+': '+version+'<br/>'+resStrSite+': <a href="http://www.e512.net" target="_blank">e512.net</a><br />'+resStrMail+': <a href="mailto:litqqs@163.com">litqqs@163.com</a><br /></form>' ,true);
+				o = TQE.CE('DIV',$.objId+'TQHelpPanel', '<form class="ePopForm" style="line-height:20px;">TQEditor<br/>'+resStrVersion+': '+version+'<br/>'+resStrSite+': <a href="http://www.e512.net" spidertarget="_blank">e512.net</a><br />'+resStrMail+': <a href="mailto:litqqs@163.com">litqqs@163.com</a><br /></form>' ,true);
 				o.className='ePopPanel';
 			}
 			TQE.pop(o,sender);

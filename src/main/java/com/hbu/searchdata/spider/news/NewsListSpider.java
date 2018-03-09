@@ -1,6 +1,6 @@
 package com.hbu.searchdata.spider.news;
 
-import com.hbu.searchdata.model.target.NewsTarget;
+import com.hbu.searchdata.model.spidertarget.NewsTarget;
 import com.hbu.searchdata.service.impl.NewsSpiderService;
 import com.hbu.searchdata.util.TransformUtil;
 import us.codecraft.webmagic.Page;
@@ -9,8 +9,6 @@ import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @program: searchdata

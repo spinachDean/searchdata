@@ -1,8 +1,7 @@
 package com.hbu.searchdata.spider.news;
 
 import com.hbu.searchdata.model.NewsModel;
-import com.hbu.searchdata.model.target.NewsTarget;
-import com.hbu.searchdata.service.ModelService;
+import com.hbu.searchdata.model.spidertarget.NewsTarget;
 import com.hbu.searchdata.service.impl.NewsModelService;
 import com.hbu.searchdata.service.impl.NewsSpiderService;
 import com.hbu.searchdata.spider.CommentSpider;
@@ -14,7 +13,6 @@ import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
